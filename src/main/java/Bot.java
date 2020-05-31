@@ -32,6 +32,11 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
+    /**
+     * Метод для настройки сообщения и его отправки.
+     * @param message обьект с сообщением
+     * @param answer Строка, которую необходимот отправить в качестве сообщения.
+     */
     public void sendMsg(Message message, String answer) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
@@ -46,6 +51,10 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
+    /**
+     * Метод для приема сообщений.
+     * @param update Содержит сообщение от пользователя.
+     */
     @Override
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();
@@ -59,7 +68,9 @@ public class Bot extends TelegramLongPollingBot {
                     sendMsg(message, "Anyway, how is your sex life?");
                     break;
                 case "/start":
-                    sendMsg(message, "Enter the city to get a weather");
+                    sendMsg(message, "Enter the city to get the weather");
+                case "/help":
+                    sendMsg(message, "Dude just enter the city name to get the weather");
                     break;
                 default:
                     try {
@@ -88,11 +99,19 @@ public class Bot extends TelegramLongPollingBot {
         replyKeyboardMarkup.setKeyboard(keyboardRowList);
     }
 
+    /**
+     * Метод возвращает имя бота, указанное при регистрации.
+     * @return имя бота
+     */
     @Override
     public String getBotUsername() {
         return BOT_USER_NAME;
     }
 
+    /**
+     * Метод возвращает token бота для связи с сервером Telegram
+     * @return token для бота
+     */
     @Override
     public String getBotToken() {
         return BOT_TOKEN;
