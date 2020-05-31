@@ -95,11 +95,11 @@ public class Bot extends TelegramLongPollingBot {
         List<KeyboardRow> keyboardRowList = new ArrayList<>();
 
         KeyboardRow firstKeyBoardRow = new KeyboardRow();
-        firstKeyBoardRow.add(new KeyboardButton("push this"));
-        firstKeyBoardRow.add(new KeyboardButton("then this"));
+        firstKeyBoardRow.add(new KeyboardButton("/push_this"));
+        firstKeyBoardRow.add(new KeyboardButton("/then_this"));
 
         keyboardRowList.add(firstKeyBoardRow);
-        replyKeyboardMarkup.setKeyboard(keyboardRowList);
+        replyKeyboardMarkup.setKeyboard(keyboardRowList);//
     }
 
     /**
