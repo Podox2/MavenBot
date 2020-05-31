@@ -1,4 +1,3 @@
-import model.Weather;
 import model.WeatherApi;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -12,7 +11,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +31,43 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     /**
+     * Метод для приема сообщений.
+     *
+     * @param update Содержит сообщение от пользователя.
+     */
+    @Override
+    public void onUpdateReceived(Update update) {
+        Message message = update.getMessage();
+        if (message != null && message.hasText()) {
+            switch (message.getText()) {
+                case "/push_this":
+                    sendMsg(message, "Oh, hi Mark!");
+                    break;
+                case "/then_this":
+                    sendMsg(message, "Anyway, how is your sex life?");
+                    break;
+                case "/start":
+                    sendMsg(message, "Enter the city to get the weather");
+                    break;
+                case "/help":
+                    sendMsg(message, "Dude, just enter the city name to get the weather.\n" +
+                            "Or use next commands:\n" +
+                            "/push_this\n" +
+                            "/then_this");
+                    break;
+                default:
+                    sendMsg(message, WeatherApi.getWeather(message.getText()/*, weather*/));
+
+            }
+        }
+    }
+
+
+    /**
      * Метод для настройки сообщения и его отправки.
+     *
      * @param message обьект с сообщением
-     * @param answer Строка, которую необходимот отправить в качестве сообщения.
+     * @param answer  Строка, которую необходимот отправить в качестве сообщения.
      */
     public void sendMsg(Message message, String answer) {
         SendMessage sendMessage = new SendMessage();
@@ -48,40 +80,6 @@ public class Bot extends TelegramLongPollingBot {
             execute(sendMessage);
         } catch (TelegramApiException e) {
             e.printStackTrace();
-        }
-    }
-
-    /**
-     * Метод для приема сообщений.
-     * @param update Содержит сообщение от пользователя.
-     */
-    @Override
-    public void onUpdateReceived(Update update) {
-        Message message = update.getMessage();
-        Weather weather = new Weather();
-        if (message != null && message.hasText()) {
-            switch (message.getText()) {
-                case "/push_this":
-                    sendMsg(message, "Oh, hi Mark!");
-                    break;
-                case "/then_this":
-                    sendMsg(message, "Anyway, how is your sex life?");
-                    break;
-                case "/start":
-                    sendMsg(message, "Enter the city to get the weather");
-                case "/help":
-                    sendMsg(message, "Dude, just enter the city name to get the weather.\n" +
-                            "Or use next commands:\n" +
-                            "/push_this\n" +
-                            "/then_this");
-                    break;
-                default:
-                    try {
-                        sendMsg(message, WeatherApi.getWeather(message.getText(), weather));
-                    } catch (IOException e) {
-                        sendMsg(message, "No city like this, Dummy");
-                    }
-            }
         }
     }
 
@@ -104,6 +102,7 @@ public class Bot extends TelegramLongPollingBot {
 
     /**
      * Метод возвращает имя бота, указанное при регистрации.
+     *
      * @return имя бота
      */
     @Override
@@ -113,6 +112,7 @@ public class Bot extends TelegramLongPollingBot {
 
     /**
      * Метод возвращает token бота для связи с сервером Telegram
+     *
      * @return token для бота
      */
     @Override

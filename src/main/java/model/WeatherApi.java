@@ -1,7 +1,6 @@
 package model;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,33 +8,37 @@ import java.net.URL;
 import java.util.Scanner;
 
 public class WeatherApi {
-    //ecf5b97597a9fcd5af1f7b370c62b477
-    public static String getWeather(String message, Weather weather) throws IOException {
-        URL url = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + message + "&units=metric&appid=ecf5b97597a9fcd5af1f7b370c62b477");
+    private final static String APP_WEATHER_ID = "ecf5b97597a9fcd5af1f7b370c62b477";
+
+    public static String getWeather(String city) {
+        KWeatherModel weatherModel = getWeatherModel(city);
+        return "Місто: " + weatherModel.getCityName() + "\n" +
+                "Температура: " + weatherModel.getMainInfo().getTemp() + "°С\n" +
+                "Вологість: " + weatherModel.getMainInfo().getHumidity() + "%\n" +
+                "Опис: " + weatherModel.getWeather().get(0).getDescription() + "\n" +
+                "http://openweathermap.org/img/wn/" + weatherModel.getWeather().get(0).getIcon() + ".png";
+
+    }
+
+    private static KWeatherModel getWeatherModel(String city) {
+        Gson gson = new Gson();
+        KWeatherModel weatherModel = null;
+
+        try {
+            weatherModel = gson.fromJson(getJson(city), KWeatherModel.class);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return weatherModel;
+    }
+
+    private static String getJson(String city) throws IOException {
+        String jsonString = "";
+        URL url = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=metric&appid=" + APP_WEATHER_ID);
         Scanner in = new Scanner((InputStream) url.getContent());
-        String result = "";
         while (in.hasNext()) {
-            result += in.nextLine();
+            jsonString += in.nextLine();
         }
-
-        JSONObject object = new JSONObject(result);
-        weather.setName(object.getString("name"));
-
-        JSONObject mainObj = object.getJSONObject("main");
-        weather.setTemp(mainObj.getDouble("temp"));
-        weather.setHumidity(mainObj.getDouble("humidity"));
-
-        JSONArray jsonArray = object.getJSONArray("weather");
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject object1 = jsonArray.getJSONObject(i);
-            weather.setIcon((String) object1.get("icon"));
-            weather.setMain((String) object1.get("main"));
-        }
-        return "Місто " + weather.getName() + "\n" +
-                "Температура " + weather.getTemp() + "C\n" +
-                "Вологість " + weather.getHumidity() + "\n" +
-                "Температура " + weather.getTemp() + "%\n" +
-                "Опис " + weather.getMain() + "\n" +
-                "http://openweathermap.org/img/wn/" + weather.getIcon() + ".png";
+        return jsonString;
     }
 }
