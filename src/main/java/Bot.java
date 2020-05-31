@@ -61,16 +61,19 @@ public class Bot extends TelegramLongPollingBot {
         Weather weather = new Weather();
         if (message != null && message.hasText()) {
             switch (message.getText()) {
-                case "push this":
+                case "/push_this":
                     sendMsg(message, "Oh, hi Mark!");
                     break;
-                case "then this":
+                case "/then_this":
                     sendMsg(message, "Anyway, how is your sex life?");
                     break;
                 case "/start":
                     sendMsg(message, "Enter the city to get the weather");
                 case "/help":
-                    sendMsg(message, "Dude just enter the city name to get the weather");
+                    sendMsg(message, "Dude, just enter the city name to get the weather.\n" +
+                            "Or use next commands:\n" +
+                            "/push_this\n" +
+                            "/then_this");
                     break;
                 default:
                     try {
