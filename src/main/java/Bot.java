@@ -14,6 +14,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import java.util.ArrayList;
 import java.util.List;
 
+//heroku ps:scale worker=1
 public class Bot extends TelegramLongPollingBot {
     final static String BOT_TOKEN = "1083596615:AAHZ9OJYuqrYSkQ_hO5-ERvHgmL_udcbH0Q";
     final static String BOT_USER_NAME = "MyTestVebinarPodoBot";

@@ -11,7 +11,8 @@ public class WeatherApi {
     private final static String APP_WEATHER_ID = "ecf5b97597a9fcd5af1f7b370c62b477";
 
     public static String getWeather(String city) {
-        KWeatherModel weatherModel = getWeatherModel(city);
+        //KWeatherModel weatherModel = getWeatherModel(city);
+        WeatherModel weatherModel = getWeatherModel(city);
         return "Місто: " + weatherModel.getCityName() + "\n" +
                 "Температура: " + weatherModel.getMainInfo().getTemp() + "°С\n" +
                 "Вологість: " + weatherModel.getMainInfo().getHumidity() + "%\n" +
@@ -20,12 +21,12 @@ public class WeatherApi {
 
     }
 
-    private static KWeatherModel getWeatherModel(String city) {
+    private static WeatherModel getWeatherModel(String city) {
         Gson gson = new Gson();
-        KWeatherModel weatherModel = null;
+        WeatherModel weatherModel = null;
 
         try {
-            weatherModel = gson.fromJson(getJson(city), KWeatherModel.class);
+            weatherModel = gson.fromJson(getJson(city), WeatherModel.class);
         } catch (Exception e) {
             e.getMessage();
         }
