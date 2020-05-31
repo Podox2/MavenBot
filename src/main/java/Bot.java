@@ -65,7 +65,7 @@ public class Bot extends TelegramLongPollingBot {
                     try {
                         sendMsg(message, WeatherApi.getWeather(message.getText(), weather));
                     } catch (IOException e) {
-                        sendMsg(message, "No city like this, Biatch");
+                        sendMsg(message, "No city like this, Dummy");
                     }
             }
         }
