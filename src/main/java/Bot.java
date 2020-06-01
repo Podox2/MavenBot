@@ -41,23 +41,37 @@ public class Bot extends TelegramLongPollingBot {
         Message message = update.getMessage();
         if (message != null && message.hasText()) {
             switch (message.getText()) {
+                case "/start":
+                    sendStartMsg(message, "Enter the city to get the weather");
+                    break;
+
+                case "Wiseau":
+                    sendWiseauMsg(message, "Oh, hi Mark!");
+                    break;
                 case "/push_this":
-                    sendMsg(message, "Oh, hi Mark!");
+                    sendWiseauMsg(message, "Anyway, how is your sex life?");
                     break;
                 case "/then_this":
-                    sendMsg(message, "Anyway, how is your sex life!!!!?");
+                    sendWiseauMsg(message, "You are tearing me apart Lisa!");
                     break;
-                case "/start":
-                    sendMsg(message, "Enter the city to get the weather");
+
+                case "Weather":
+                    sendWeatherMsg(message, "Enter the city to get the weather");
                     break;
+                /*case "Vinnytsia":
+                    sendWeatherMsg(message, WeatherApi.getWeather(message.getText()));
+                    break;
+                case "Kyiv":
+                    sendWeatherMsg(message, WeatherApi.getWeather(message.getText()));
+                    break;*/
                 case "/help":
-                    sendMsg(message, "Dude, just enter the city name to get the weather.\n" +
+                    sendStartMsg(message, "Dude, just enter the city name to get the weather.\n" +
                             "Or use next commands:\n" +
                             "/push_this\n" +
                             "/then_this");
                     break;
                 default:
-                    sendMsg(message, WeatherApi.getWeather(message.getText()/*, weather*/));
+                    sendWeatherMsg(message, WeatherApi.getWeather(message.getText()/*, weather*/));
 
             }
         }
@@ -70,21 +84,68 @@ public class Bot extends TelegramLongPollingBot {
      * @param message обьект с сообщением
      * @param answer  Строка, которую необходимот отправить в качестве сообщения.
      */
-    public void sendMsg(Message message, String answer) {
+    public void sendStartMsg(Message message, String answer) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(message.getChatId().toString());
         sendMessage.setReplyToMessageId(message.getMessageId());
         sendMessage.setText(answer);
         try {
-            setButtons(sendMessage);
+            setStartButtons(sendMessage);
             execute(sendMessage);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
     }
 
-    public void setButtons(SendMessage sendMessage) {
+
+    public void sendWeatherMsg(Message message, String answer) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.enableMarkdown(true);
+        sendMessage.setChatId(message.getChatId().toString());
+        sendMessage.setReplyToMessageId(message.getMessageId());
+        sendMessage.setText(answer);
+        try {
+            setWeatherButtons(sendMessage);
+            execute(sendMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void sendWiseauMsg(Message message, String answer) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.enableMarkdown(true);
+        sendMessage.setChatId(message.getChatId().toString());
+        sendMessage.setReplyToMessageId(message.getMessageId());
+        sendMessage.setText(answer);
+        try {
+            setWiseauButtons(sendMessage);
+            execute(sendMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setStartButtons(SendMessage sendMessage) {
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        sendMessage.setReplyMarkup(replyKeyboardMarkup);
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(false);
+
+        List<KeyboardRow> keyboardRowList = new ArrayList<>();
+
+        KeyboardRow firstKeyBoardRow = new KeyboardRow();
+        firstKeyBoardRow.add(new KeyboardButton("Wiseau"));
+        firstKeyBoardRow.add(new KeyboardButton("Weather"));
+
+        keyboardRowList.add(firstKeyBoardRow);
+        replyKeyboardMarkup.setKeyboard(keyboardRowList);//
+    }
+
+    public void setWiseauButtons(SendMessage sendMessage) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         sendMessage.setReplyMarkup(replyKeyboardMarkup);
         replyKeyboardMarkup.setSelective(true);
@@ -99,6 +160,29 @@ public class Bot extends TelegramLongPollingBot {
 
         keyboardRowList.add(firstKeyBoardRow);
         replyKeyboardMarkup.setKeyboard(keyboardRowList);//
+    }
+
+    public void setWeatherButtons(SendMessage sendMessage) {
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        sendMessage.setReplyMarkup(replyKeyboardMarkup);
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(false);
+
+        List<KeyboardRow> keyboardRowList = new ArrayList<>();
+
+        KeyboardRow firstKeyBoardRow = new KeyboardRow();
+        firstKeyBoardRow.add(new KeyboardButton("Kyiv"));
+        firstKeyBoardRow.add(new KeyboardButton("Vinnytsia"));
+
+
+        KeyboardRow secondKeyBoardRow = new KeyboardRow();
+        secondKeyBoardRow.add(new KeyboardButton("Odesa"));
+        secondKeyBoardRow.add(new KeyboardButton("Lviv"));
+
+        keyboardRowList.add(firstKeyBoardRow);
+        keyboardRowList.add(secondKeyBoardRow);
+        replyKeyboardMarkup.setKeyboard(keyboardRowList);
     }
 
     /**
