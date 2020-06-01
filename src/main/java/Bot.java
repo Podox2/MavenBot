@@ -45,7 +45,7 @@ public class Bot extends TelegramLongPollingBot {
                     sendMsg(message, "Oh, hi Mark!");
                     break;
                 case "/then_this":
-                    sendMsg(message, "Anyway, how is your sex life?");
+                    sendMsg(message, "Anyway, how is your sex life!!!!?");
                     break;
                 case "/start":
                     sendMsg(message, "Enter the city to get the weather");
