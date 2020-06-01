@@ -58,6 +58,9 @@ public class Bot extends TelegramLongPollingBot {
                 case "Weather":
                     sendWeatherMsg(message, "Enter the city to get the weather");
                     break;
+                case "Бікіні боттом":
+                    sendWeatherMsg(message, "Волога 100% (як в трусиках Стейсі, коли вона біля мене)");
+                    break;
                 /*case "Vinnytsia":
                     sendWeatherMsg(message, WeatherApi.getWeather(message.getText()));
                     break;
